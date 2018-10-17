@@ -2,7 +2,7 @@
 $(function() {
   $(".change-status").on("click", function(event) {
     var id = $(this).data("id");
-    var newEaten= $(this).data("newsleep");
+    var newEaten= $(this).data("eatenstate");
 
     var nEatenState = {
       eaten: newEaten
@@ -37,6 +37,23 @@ $(function() {
     }).then(
       function() {
         console.log("created new burger");
+        // Reload the page to get the updated list
+        location.reload();
+      }
+    );
+  });
+
+  $(".remove-item").on("click", function(event) {
+  
+    // Send the PUT request.
+    var id = $(this).data("id");
+
+    // Send the DELETE request.
+    $.ajax("/api/burgers/" + id, {
+      type: "DELETE"
+    }).then(
+      function() {
+        console.log("Delete Burger", id);
         // Reload the page to get the updated list
         location.reload();
       }

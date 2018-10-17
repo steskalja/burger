@@ -9,8 +9,11 @@ var burger = require("../models/burger.js");
 router.get("/", function(req, res) {
   console.log("get");
   burger.all().then((result) => {
-    console.log(result);
-    res.render("index", result);
+    var bObject = {
+      burgers: result
+    };
+    console.log(bObject);
+    res.render("index", bObject);
   });
 });
 
@@ -30,6 +33,19 @@ router.put("/api/burgers/:id", function(req, res) {
     eaten: req.body.eaten
   }, condition).then((result) => {
     if (result.changedRows == 0) {
+      // If no rows were changed, then the ID must not exist, so 404
+      return res.status(404).end();
+    } else {
+      res.status(200).end();
+    }
+  });
+});
+
+router.delete("/api/burgers/:id", function(req, res) {
+  var key = req.params.id;
+
+  burger.delete(key).then((result) => {
+    if (result.affectedRows == 0) {
       // If no rows were changed, then the ID must not exist, so 404
       return res.status(404).end();
     } else {

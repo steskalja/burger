@@ -29,6 +29,15 @@ var burger = {
       reject(rej);
     });
   });
+  },
+  delete: function(key) {
+    return new Promise((resolve,reject) =>{
+    orm.delete("burgers", key).then((res) =>  {
+      resolve(res);
+    }).catch((rej) => {
+      reject(rej);
+    });
+  });
   }
 };
 
